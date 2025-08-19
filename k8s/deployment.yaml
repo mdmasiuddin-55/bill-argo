@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bill
+  labels:
+    app: bill
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bill
+  template:
+    metadata:
+      labels:
+        app: bill
+    spec:
+      containers:
+        - name: bill
+          image: mdmasiuddin55/bill:latest
+          ports:
+            - containerPort: 8080   # <-- change if your app listens on a different port
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+      # If your Docker Hub repo is PRIVATE, uncomment the next two lines
+      # imagePullSecrets:
+      #   - name: regcred
