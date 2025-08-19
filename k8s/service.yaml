@@ -2,13 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: bill-service
-  labels:
-    app: bill
+  namespace: bill-ns
 spec:
   selector:
     app: bill
   ports:
-    - name: http
+    - protocol: TCP
       port: 80
-      targetPort: 8080   # <-- must match containerPort above
-  type: NodePort
+      targetPort: 8080
+  type: NodePort   # or LoadBalancer if using a cloud provider
